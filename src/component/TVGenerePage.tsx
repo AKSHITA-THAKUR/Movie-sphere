@@ -24,7 +24,7 @@ const GenereList = () =>{
             <div
             key={shows.id}
             className="w-[250px] mx-4 border my-5 shadow-md rounded-md zoom-out mt-20 bg-white/10 "
-            onClick={() => navigate(`/shows/${shows.id}`)} 
+            
         >
             <div className="w-full">
                 <img
