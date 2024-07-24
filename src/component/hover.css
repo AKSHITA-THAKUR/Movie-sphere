@@ -1,0 +1,12 @@
+.zoom-out:hover {
+    transform: scale(1.1); /* Scale down to 90% */
+    transition: transform 0.3s ease-in-out; /* Smooth transition */
+}
+
+.bg{
+    background-color:#0B0C10;
+}
+
+footer{
+    background-color: #1F2833;
+}

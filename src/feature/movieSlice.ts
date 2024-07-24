@@ -1,16 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { MovieDetails } from "../MovieDetails";
 import {
 	Popular,
 	TopRatedMovies,
 	Upcoming,
 	MovieGenere,
 	NowPlaying,
+	Details,
+	MovieGenereList,
 } from "../api/handleApi";
 
 export interface MovieState {
-	popular: any[];
-	topRated: any[];
-	upcoming: any[];
+	popular: MovieDetails[];
+	MovieList: MovieDetails[];
+	topRated: MovieDetails[];
+	upcoming: MovieDetails[];
+	deatils: MovieDetails;
 	geners: any[];
 	nowPlaying: any[];
 	status: "idle" | "loading" | "succeeded" | "failed";
@@ -21,6 +26,8 @@ const initialMovieState: MovieState = {
 	popular: [],
 	topRated: [],
 	upcoming: [],
+	deatils: {} as MovieDetails ,
+	MovieList: [],
 	geners: [],
 	nowPlaying: [],
 	status: "idle",
@@ -53,6 +60,23 @@ export const Moviegeners: any = createAsyncThunk(
 	async () => {
 		const movieGeners = await MovieGenere();
 		return movieGeners;
+	}
+);
+
+export const getMovieGenereList: any = createAsyncThunk(
+	"GetListofMovies",
+	async (id: number) => {
+		const List = await MovieGenereList(id);
+		console.log("The list is activated", List);
+		return List;
+	}
+);
+
+export const getDetails: any = createAsyncThunk(
+	"getDeatils",
+	async (id: number) => {
+		const movieDetails: any = await Details(id);
+		return movieDetails;
 	}
 );
 
@@ -131,6 +155,31 @@ const MovieSlice = createSlice({
 				state.error =
 					action.error.message ||
 					"Failed to fetch now playing movies";
+			})
+			.addCase(getDetails.pending, (state) => {
+				state.status = "loading";
+				state.error = null;
+			})
+			.addCase(getDetails.fulfilled, (state, action) => {
+				state.deatils = action.payload;
+				state.status = "succeeded";
+			})
+			.addCase(getDetails.rejected, (state, action) => {
+				state.status = "failed";
+				state.error = action.error.message;
+			})
+			.addCase(getMovieGenereList.pending, (state) => {
+				state.status = "loading";
+				state.error = null;
+			})
+			.addCase(getMovieGenereList.fulfilled, (state, action) => {
+				state.MovieList = action.payload;
+				state.status = "succeeded";
+				console.log("This is successfully done", state.MovieList);
+			})
+			.addCase(getMovieGenereList.rejected, (state, action) => {
+				state.status = "failed";
+				state.error = action.error.message;
 			});
 	},
 });

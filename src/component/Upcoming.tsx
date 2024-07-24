@@ -1,47 +1,46 @@
+
+
 import { useEffect  , useState} from 'react'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { getTopMovies } from '../feature/movieSlice'
-import { useSelector , useDispatch  } from 'react-redux'
+import { upComingMovies } from '../feature/movieSlice'
+import { useSelector , useDispatch } from 'react-redux'
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import { RootState } from '../redux/store'
-import { MovieDetails } from '../MovieDetails'
+import { MovieDetails } from '../MovieDetails';
 import "./hover.css"
 
-const TopRated:React.FC = () => {
+const UpComing:React.FC = () => {
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(()=>{
-        dispatch(getTopMovies())
+        dispatch(upComingMovies())
     } , [])
-    const topMovies = useSelector((state: RootState) => state.movies.topRated)
-    console.log(topMovies)
+    const upcoming = useSelector((state: RootState) => state.movies.upcoming)
+
     const moviesToShow = 4; 
 
 
 	const nextSlide = () => {
         setCurrentSlide((prev) =>
-            prev === Math.ceil(topMovies.length / moviesToShow) - 1 ? 0 : prev + 1
+            prev === Math.ceil(upcoming.length / moviesToShow) - 1 ? 0 : prev + 1
         );
 	};
 
 	const prevSlide = () => {
         setCurrentSlide((prev) =>
-            prev === 0 ? Math.ceil(topMovies.length / moviesToShow) - 1 : prev - 1
+            prev === 0 ? Math.ceil(upcoming.length / moviesToShow) - 1 : prev - 1
         );
 	};
 
 
-    const Topmovies = () =>{
+    const Upmovies = () =>{
 
-        return topMovies.map((movies:MovieDetails)=>(
+        return upcoming.map((movies:MovieDetails)=>(
             <div
             key={movies.id}
-            className="w-[250px] mx-4 border my-5 cursor-pointer  rounded-md zoom-out  bg-white/5 z-10 backdrop-filter backdrop-blur-lg shadow-lg"
-            onClick={() => navigate(`/movie/${movies.id}`)} 
+            className="w-[250px] mx-4 border my-5 shadow-md rounded-md zoom-out  bg-white/10 z-10 backdrop-filter backdrop-blur-lg  cursor-pointer"
             
         >
             <div className="w-full">
@@ -69,7 +68,7 @@ const TopRated:React.FC = () => {
     <div>
      <div className="ml-[100px] mt-10">
             <div>
-                <h1 className="text-2xl font-bold text-white">Top Rated Movies...</h1>
+                <h1 className="text-2xl font-bold text-white"> Upcoming Movies...</h1>
             </div>
             <div className="relative w-[1100px]">
                 <div className="flex items-center">
@@ -84,15 +83,15 @@ const TopRated:React.FC = () => {
                             className="flex transition-transform duration-300 ease-in-out"
                             style={{
                                 transform: `translateX(-${currentSlide * (100 / moviesToShow)}%)`,
-                                width: `${topMovies.length * 250}px`
+                                width: `${upcoming.length * 250}px`
                             }}
                         >
-                            {Topmovies()}
+                            {Upmovies()}
                         </div>
                     </div>
                     <button
                         onClick={nextSlide}
-                        className="absolute right-0 z-10 p-2 bg-gray-700 rounded-full hover:bg-gray-400"
+                        className="absolute right-0 z-10 p-2 bg-gray-600 rounded-full hover:bg-gray-400"
                     >
                         <FaArrowRight />
                     </button>
@@ -103,4 +102,4 @@ const TopRated:React.FC = () => {
   )
 }
 
-export default TopRated
+export default UpComing

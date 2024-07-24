@@ -1,7 +1,6 @@
 import React from "react";
 import bgVideo3 from "../asset/bgVideo3.mp4";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
 import { useAuth0 } from "@auth0/auth0-react";
 
 
@@ -10,7 +9,7 @@ const LandingPage: React.FC = () => {
 	const navigate = useNavigate();
 	return (
         <>
-         <Navbar/>
+      
 		<div className=" h-full flex flex-col justify-between m-0 items-center  overflow-hidden ">
            
 			<video

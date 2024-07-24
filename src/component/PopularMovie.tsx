@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPopularMovies } from "../feature/movieSlice";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "../redux/store";
+import { MovieDetails } from "../MovieDetails";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
-
+import "./hover.css"
 const PopularMovie: React.FC = () => {
     const dispatch = useDispatch();
     const [currentSlide, setCurrentSlide] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getPopularMovies());
@@ -16,7 +19,7 @@ const PopularMovie: React.FC = () => {
         (state: RootState) => state.movies.popular
     );
 
-    const moviesToShow = 4; // Number of movies to show at a time
+    const moviesToShow = 4; 
 
     const nextSlide = () => {
         setCurrentSlide((prev) =>
@@ -31,10 +34,11 @@ const PopularMovie: React.FC = () => {
     };
 
     const PopMovies = () => {
-        return PopularMovies.map((movies: any) => (
+        return PopularMovies.map((movies: MovieDetails) => (
             <div
                 key={movies.id}
-                className="w-[250px] mx-4 border my-5 shadow-md rounded-md"
+                className="w-[250px] mx-4 border my-5 cursor-pointer  rounded-md zoom-out  bg-white/10 z-10 backdrop-filter backdrop-blur-lg shadow-lg"
+                onClick={() => navigate(`/movie/${movies.id}`)} 
             >
                 <div className="w-full">
                     <img
@@ -44,7 +48,7 @@ const PopularMovie: React.FC = () => {
                     />
                 </div>
 
-                <div className="ml-3">
+                <div className="ml-3 ">
                     <h2 className="text-lg font-semibold mb-2">
                         {movies.title}
                     </h2>
@@ -57,15 +61,15 @@ const PopularMovie: React.FC = () => {
     };
 
     return (
-        <div className="ml-[150px] mt-10">
+        <div className="ml-[100px] mt-10">
             <div>
-                <h1 className="text-2xl font-bold text-black">Popular Movies...</h1>
+                <h1 className="text-2xl font-bold text-white">Popular Movies...</h1>
             </div>
             <div className="relative w-[1100px]">
                 <div className="flex items-center">
                     <button
                         onClick={prevSlide}
-                        className="absolute left-0 z-10 p-2 bg-gray-200 rounded-full hover:bg-gray-400"
+                        className="absolute left-0 z-10 p-2 bg-gray-600 rounded-full hover:bg-gray-400"
                     >
                         <FaArrowLeft />
                     </button>
@@ -82,7 +86,7 @@ const PopularMovie: React.FC = () => {
                     </div>
                     <button
                         onClick={nextSlide}
-                        className="absolute right-0 z-10 p-2 bg-gray-200 rounded-full hover:bg-gray-400"
+                        className="absolute right-0 z-10 p-2 bg-gray-600 rounded-full hover:bg-gray-400"
                     >
                         <FaArrowRight />
                     </button>
